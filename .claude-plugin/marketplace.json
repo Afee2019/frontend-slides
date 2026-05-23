@@ -1,18 +1,18 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "frontend-slides",
-  "description": "Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files.",
+  "name": "slides-cn",
+  "description": "简体中文原生的 HTML 演示文稿生成器:15 套预设(含中文字体配对与 3 套中文原生)、按汉字密度校准的视口规则、避头尾/悬挂标点/palt 字距等中文排版规范。Simplified-Chinese-native HTML presentation generator with curated CJK font pairings and typography rules.",
   "owner": {
-    "name": "zarazhangrui",
-    "url": "https://github.com/zarazhangrui"
+    "name": "Afee2019",
+    "url": "https://github.com/Afee2019"
   },
   "plugins": [
     {
-      "name": "frontend-slides",
-      "description": "Zero-dependency HTML presentation generator with 12 curated visual themes, PPT conversion, and anti-AI-slop design philosophy.",
-      "source": "./plugins/frontend-slides",
+      "name": "slides-cn",
+      "description": "零依赖、动画驱动的 HTML 演示生成器(中文原生分叉):15 套视觉风格 + 中文字体配对 + 中文排版规则。Fork of frontend-slides with first-class Simplified Chinese support.",
+      "source": "./plugins/slides-cn",
       "category": "productivity",
-      "tags": ["presentations", "slides", "html", "design", "powerpoint"]
+      "tags": ["presentations", "slides", "html", "design", "powerpoint", "chinese", "cjk", "中文"]
     }
   ]
 }

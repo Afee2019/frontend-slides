@@ -1,9 +1,9 @@
 ---
-name: frontend-slides
+name: slides-cn
 description: 从零创建或由 PowerPoint 转换而来的、动画丰富、零依赖的 HTML 演示文稿,默认中文原生,同样支持英文与中英混排。Use when 用户要求"做幻灯片""做 PPT""做演示""做发布会页面""把 PPT 转成网页"。通过视觉预览引导没有设计经验的用户选定审美,而非用抽象词描述。Create stunning, animation-rich HTML presentations from scratch or by converting PowerPoint files. Use when the user wants to build a presentation, convert a PPT/PPTX to web, or create slides for a talk/pitch.
 ---
 
-# Frontend Slides(中文原生版)
+# Slides CN(简体中文原生版)
 
 为非设计师生成单文件、零依赖、动画驱动的 HTML 演示文稿。**默认以简体中文为一等公民**:字体堆栈、字号最小值、行高、标点处理、避头尾、首行缩进、密度上限,全部按中文阅读习惯校准。英文内容、中英混排也是支持目标,不再降级处理。
 

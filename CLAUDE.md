@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is **not a runnable application** — it is a Claude Code **Skill** (and `/plugin` package) that another instance of Claude reads at runtime to generate HTML presentations. The "code" is mostly Markdown that briefs the model, plus three helper scripts. There is no build system, no test suite, no package manager, no `package.json`.
 
-**This repo is a Simplified-Chinese-native fork of upstream `zarazhangrui/frontend-slides`.** It is intentionally diverged — it will not rebase onto upstream. Key differences:
+**This repo is a Simplified-Chinese-native fork of upstream `zarazhangrui/frontend-slides`, renamed `slides-cn` at the package level.** The GitHub repo path is `Afee2019/frontend-slides` (kept for fork discoverability), but the marketplace name, plugin name, skill name, and slash command are all `slides-cn` so the two plugins can coexist if a user installs both. It is intentionally diverged — it will not rebase onto upstream. Key differences:
 
 - All Skill instructions, AskUserQuestion options, and code comments are in Simplified Chinese.
 - Every preset has a curated Chinese font pairing alongside the original English `font-family`.
@@ -19,25 +19,25 @@ English content is still a first-class target — the `font-family` strings put 
 
 When asked to "run" or "test" this project, the only meaningful operations are:
 
-- Invoke the skill itself in another Claude Code session (`/frontend-slides`) and inspect the generated HTML.
+- Invoke the skill itself in another Claude Code session (`/slides-cn`) and inspect the generated HTML.
 - Execute the three scripts directly against a sample deck (see below).
 
 ## Repository Layout
 
-Root-level files are the canonical skill content. The `plugins/frontend-slides/skills/frontend-slides/` tree is the **plugin distribution form** — every file in there is a **symlink** back to the root copy. Edit at the root; do not duplicate.
+Root-level files are the canonical skill content. The `plugins/slides-cn/skills/slides-cn/` tree is the **plugin distribution form** — every file in there is a **symlink** back to the root copy. Edit at the root; do not duplicate.
 
 ```
-SKILL.md                 # entrypoint — always loaded when the skill is invoked
-STYLE_PRESETS.md         # 12 visual presets, loaded in Phase 2
+SKILL.md                 # entrypoint — always loaded when the skill is invoked (name: slides-cn)
+STYLE_PRESETS.md         # 15 visual presets (12 bilingual + 3 Chinese-native), loaded in Phase 2
 viewport-base.css        # MANDATORY CSS — must be inlined verbatim into every generated deck
 html-template.md         # HTML/JS architecture reference, loaded in Phase 3
-animation-patterns.md    # CSS/JS animation snippets, loaded in Phase 3
+animation-patterns.md    # CSS/JS animation snippets + 中文排版规范, loaded in Phase 3
 scripts/extract-pptx.py  # PPTX -> JSON + assets/ extractor (Phase 4)
 scripts/deploy.sh        # Vercel deploy (Phase 6A)
 scripts/export-pdf.sh    # Playwright-based PDF export (Phase 6B)
-.claude-plugin/marketplace.json          # marketplace metadata
-plugins/frontend-slides/.claude-plugin/plugin.json   # plugin metadata
-plugins/.../skills/frontend-slides/*     # symlinks back to root (do not edit)
+.claude-plugin/marketplace.json                  # marketplace metadata (name: slides-cn)
+plugins/slides-cn/.claude-plugin/plugin.json     # plugin metadata (name: slides-cn)
+plugins/slides-cn/skills/slides-cn/*             # symlinks back to root (do not edit)
 ```
 
 ## Architectural Big Picture
@@ -48,7 +48,18 @@ plugins/.../skills/frontend-slides/*     # symlinks back to root (do not edit)
 
 **One self-contained HTML file is the output target.** Zero dependencies, no build, inline CSS/JS, fonts from Fontshare/Google Fonts. This constraint is load-bearing: it's the reason the skill is durable and what `deploy.sh` and `export-pdf.sh` can both assume.
 
-**Two distribution surfaces, one source.** The skill is consumed two ways: (1) copied into `~/.claude/skills/frontend-slides/` manually, or (2) installed via `/plugin marketplace add zarazhangrui/frontend-slides`. The plugin form just symlinks the root files into a `plugins/.../skills/.../` directory the plugin loader expects. If you add a new top-level file that the skill needs at runtime, add a matching symlink under `plugins/frontend-slides/skills/frontend-slides/` (or `plugins/.../scripts/` for scripts).
+**Two distribution surfaces, one source.** The skill is consumed two ways: (1) copied into `~/.claude/skills/slides-cn/` manually, or (2) installed via `/plugin marketplace add Afee2019/frontend-slides` + `/plugin install slides-cn@slides-cn`. The plugin form just symlinks the root files into a `plugins/.../skills/.../` directory the plugin loader expects. If you add a new top-level file that the skill needs at runtime, add a matching symlink under `plugins/slides-cn/skills/slides-cn/` (or `plugins/.../scripts/` for scripts).
+
+**Naming map** (easy to confuse — they're all `slides-cn` but live at different paths):
+
+| Identifier               | Value                                          | Where                                    |
+| ------------------------ | ---------------------------------------------- | ---------------------------------------- |
+| GitHub repo              | `Afee2019/frontend-slides`                     | git remote (intentionally not renamed)   |
+| Marketplace name         | `slides-cn`                                    | `.claude-plugin/marketplace.json`        |
+| Plugin name              | `slides-cn`                                    | `plugins/slides-cn/.claude-plugin/plugin.json` |
+| Skill name               | `slides-cn`                                    | `SKILL.md` frontmatter                   |
+| Slash command            | `/slides-cn`                                   | derived from skill name                  |
+| Plugin install spec      | `slides-cn@slides-cn`                          | `<plugin>@<marketplace>` form            |
 
 ## Load-Bearing Invariants
 

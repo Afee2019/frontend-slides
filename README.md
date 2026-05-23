@@ -1,6 +1,8 @@
-# Frontend Slides(中文原生版)
+# Slides CN(简体中文原生版)
 
-> **English summary**: A Claude Code skill that creates stunning, animation-rich HTML presentations — from scratch or by converting PowerPoint files. **This fork is Simplified-Chinese-native**: every preset has a curated Chinese font pairing, CSS rules cover full-width punctuation / line-break / hanging-punctuation / `palt` / 2-em first-line indent / per-language font stacks, and content-density limits are recalibrated for CJK character density. English content is still fully supported.
+> **English summary**: `slides-cn` is a Claude Code skill that creates stunning, animation-rich HTML presentations — from scratch or by converting PowerPoint files. **This is a Simplified-Chinese-native fork of [`frontend-slides`](https://github.com/zarazhangrui/frontend-slides)**: renamed to `slides-cn` to avoid collision with the upstream plugin. Every preset has a curated Chinese font pairing, CSS rules cover full-width punctuation / line-break / hanging-punctuation / `palt` / 2-em first-line indent / per-language font stacks, and content-density limits are recalibrated for CJK character density. English content is still fully supported.
+
+> **本分叉已重命名为 `slides-cn`**,以避免与上游 `frontend-slides` 插件在 marketplace、skill name、`/slash` 命令上撞车。两个插件可以并存安装。
 
 为非设计师做出**单文件、零依赖、动画驱动的 HTML 演示文稿**——可以从零开始,也可以把 PowerPoint 转成网页。
 
@@ -33,36 +35,38 @@
 在 Claude Code 里两行命令搞定:
 
 ```bash
-/plugin marketplace add zarazhangrui/frontend-slides
-/plugin install frontend-slides@frontend-slides
+/plugin marketplace add Afee2019/frontend-slides
+/plugin install slides-cn@slides-cn
 ```
 
-然后输 `/frontend-slides` 即可调用。
+(GitHub 仓库本身还叫 `frontend-slides`,只是插件 / skill 标识改成了 `slides-cn`。)
+
+然后输 `/slides-cn` 即可调用。
 
 ### 手工安装
 
 复制本仓库到 Claude Code 的 skills 目录:
 
 ```bash
-git clone https://github.com/zarazhangrui/frontend-slides.git ~/.claude/skills/frontend-slides
+git clone https://github.com/Afee2019/frontend-slides.git ~/.claude/skills/slides-cn
 ```
 
 或者只拷文件:
 
 ```bash
-mkdir -p ~/.claude/skills/frontend-slides/scripts
-cp SKILL.md STYLE_PRESETS.md viewport-base.css html-template.md animation-patterns.md ~/.claude/skills/frontend-slides/
-cp scripts/extract-pptx.py scripts/deploy.sh scripts/export-pdf.sh ~/.claude/skills/frontend-slides/scripts/
+mkdir -p ~/.claude/skills/slides-cn/scripts
+cp SKILL.md STYLE_PRESETS.md viewport-base.css html-template.md animation-patterns.md ~/.claude/skills/slides-cn/
+cp scripts/extract-pptx.py scripts/deploy.sh scripts/export-pdf.sh ~/.claude/skills/slides-cn/scripts/
 ```
 
-输 `/frontend-slides` 调用。
+输 `/slides-cn` 调用。
 
 ## 用法
 
 ### 从零做一份演示
 
 ```
-/frontend-slides
+/slides-cn
 
 > "帮我做一份 AI 创业公司的融资路演 PPT"
 ```
@@ -78,7 +82,7 @@ cp scripts/extract-pptx.py scripts/deploy.sh scripts/export-pdf.sh ~/.claude/ski
 ### PPT 转换
 
 ```
-/frontend-slides
+/slides-cn
 
 > "把 presentation.pptx 转成网页演示"
 ```

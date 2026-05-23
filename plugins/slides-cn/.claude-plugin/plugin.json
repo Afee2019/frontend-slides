@@ -1,0 +1,13 @@
+{
+  "name": "slides-cn",
+  "version": "1.1.0",
+  "description": "零依赖、动画驱动的 HTML 演示生成器(中文原生分叉):15 套视觉风格 + 完整中文字体配对 + 避头尾/悬挂标点/palt 等中文排版规则。基于 zarazhangrui/frontend-slides 改写。",
+  "author": {
+    "name": "Afee2019",
+    "url": "https://github.com/Afee2019"
+  },
+  "homepage": "https://github.com/Afee2019/frontend-slides",
+  "repository": "https://github.com/Afee2019/frontend-slides",
+  "license": "MIT",
+  "keywords": ["presentations", "slides", "html", "design", "powerpoint", "animations", "chinese", "cjk", "中文", "中文排版"]
+}
