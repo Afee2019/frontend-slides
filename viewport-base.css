@@ -1,10 +1,12 @@
 /* ===========================================
-   VIEWPORT FITTING: MANDATORY BASE STYLES
-   Include this ENTIRE file in every presentation.
-   These styles ensure slides fit exactly in the viewport.
+   视口贴合:强制基线样式
+   每一份演示都必须完整内联本文件。
+   本文件确保每张幻灯片正好等于视口,
+   并默认按中文阅读习惯校准字号、行高、断行规则。
+   英文场景不受影响(规则在 [lang^="zh"] 作用域内激活)。
    =========================================== */
 
-/* 1. Lock html/body to viewport */
+/* 1. 锁定 html / body 到视口 */
 html, body {
     height: 100%;
     overflow-x: hidden;
@@ -15,70 +17,74 @@ html {
     scroll-behavior: smooth;
 }
 
-/* 2. Each slide = exact viewport height */
+/* 2. 每张幻灯片 = 严格的视口高度 */
 .slide {
     width: 100vw;
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport height for mobile browsers */
-    overflow: hidden; /* CRITICAL: Prevent ANY overflow */
+    height: 100dvh; /* 移动端动态视口高度 */
+    overflow: hidden; /* 关键:禁止任何溢出 */
     scroll-snap-align: start;
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
-/* 3. Content container with flex for centering */
+/* 3. 内容容器:flex 居中 */
 .slide-content {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     max-height: 100%;
-    overflow: hidden; /* Double-protection against overflow */
+    overflow: hidden; /* 双重保险 */
     padding: var(--slide-padding);
 }
 
-/* 4. ALL typography uses clamp() for responsive scaling */
+/* 4. 全部用 clamp() 做响应式字号 */
 :root {
-    /* Titles scale from mobile to desktop */
+    /* 标题:从移动端缩放到桌面 */
     --title-size: clamp(1.5rem, 5vw, 4rem);
     --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
     --h3-size: clamp(1rem, 2.5vw, 1.75rem);
 
-    /* Body text */
+    /* 正文 */
     --body-size: clamp(0.75rem, 1.5vw, 1.125rem);
     --small-size: clamp(0.65rem, 1vw, 0.875rem);
 
-    /* Spacing scales with viewport */
+    /* 间距随视口缩放 */
     --slide-padding: clamp(1rem, 4vw, 4rem);
     --content-gap: clamp(0.5rem, 2vw, 2rem);
     --element-gap: clamp(0.25rem, 1vw, 1rem);
+
+    /* 行高:默认拉丁文 */
+    --line-height-body: 1.5;
+    --line-height-tight: 1.2;
 }
 
-/* 5. Cards/containers use viewport-relative max sizes */
+/* 5. 卡片 / 容器使用视口相对最大尺寸 */
 .card, .container, .content-box {
     max-width: min(90vw, 1000px);
     max-height: min(80vh, 700px);
 }
 
-/* 6. Lists auto-scale with viewport */
+/* 6. 列表随视口自动缩放 */
 .feature-list, .bullet-list {
     gap: clamp(0.4rem, 1vh, 1rem);
 }
 
 .feature-list li, .bullet-list li {
     font-size: var(--body-size);
-    line-height: 1.4;
+    line-height: var(--line-height-body);
 }
 
-/* 7. Grids adapt to available space */
+/* 7. 网格自适应可用空间 */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     gap: clamp(0.5rem, 1.5vw, 1rem);
 }
 
-/* 8. Images constrained to viewport */
+/* 8. 图片受视口约束 */
 img, .image-container {
     max-width: 100%;
     max-height: min(50vh, 400px);
@@ -86,11 +92,90 @@ img, .image-container {
 }
 
 /* ===========================================
-   RESPONSIVE BREAKPOINTS
-   Aggressive scaling for smaller viewports
+   中文阅读校准 (CJK)
+   只在 <html lang="zh*"> 或元素带 lang="zh*" 时激活,
+   英文 / 其他语言场景不受影响。
+
+   覆盖的规则:
+   - 行高提高到 1.7(汉字方块结构需要更宽行距)
+   - 标题大字号 letter-spacing 微收
+   - 启用避头尾、悬挂标点、标点挤压、palt 比例字宽
+   - 字号下限提升到 14px / 12px(汉字 < 12px 在常见屏上严重退化)
+   - 长 URL / 代码用 overflow-wrap 兜底,但禁止汉字间硬断
    =========================================== */
 
-/* Short viewports (< 700px height) */
+[lang^="zh"] {
+    /* 断行规则 */
+    line-break: strict;              /* 严格避头尾 */
+    word-break: normal;              /* 汉字之间不允许硬断 */
+    overflow-wrap: anywhere;         /* 长串(URL / 代码)兜底 */
+    hyphens: none;                   /* 中文不连字符 */
+
+    /* 标点 / 字距优化 */
+    text-spacing: ideograph-alpha ideograph-numeric ideograph-special;
+    text-spacing-trim: trim-start;   /* 行首标点不留白(现代浏览器) */
+    font-feature-settings: "palt" 1, "kern" 1;
+    hanging-punctuation: first allow-end last;
+}
+
+[lang^="zh"] body {
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+[lang^="zh"] h1,
+[lang^="zh"] .title-display {
+    line-height: 1.15;
+    letter-spacing: -0.02em;         /* 大字号字间距微收 */
+}
+
+[lang^="zh"] h2,
+[lang^="zh"] h3 {
+    line-height: 1.3;
+}
+
+[lang^="zh"] .prose p,
+[lang^="zh"] .article p {
+    text-indent: 2em;                /* 正文段落首行缩进 2 字 */
+}
+
+[lang^="zh"] .quote,
+[lang^="zh"] blockquote {
+    line-height: 1.8;
+    text-indent: 0;                  /* 引文不缩进 */
+}
+
+[lang^="zh"] li,
+[lang^="zh"] .badge,
+[lang^="zh"] .tag {
+    text-indent: 0;                  /* 列表项 / 徽章 / 标签不缩进 */
+}
+
+/* 中文场景下提高字号下限 —— 不允许汉字小于 12px */
+[lang^="zh"] :root,
+:root[lang^="zh"] {
+    --body-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    --small-size: clamp(0.75rem, 1.1vw, 0.95rem);
+    --line-height-body: 1.7;
+    --line-height-tight: 1.15;
+}
+
+/* 数字密集场景启用等宽 / lining 数字 */
+[lang^="zh"] .data,
+[lang^="zh"] .number-grid,
+[lang^="zh"] .counter,
+[lang^="zh"] .page-num {
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ===========================================
+   响应式断点
+   小视口下更激进地缩放
+   =========================================== */
+
+/* 矮视口 (< 700px 高) */
 @media (max-height: 700px) {
     :root {
         --slide-padding: clamp(0.75rem, 3vw, 2rem);
@@ -100,7 +185,7 @@ img, .image-container {
     }
 }
 
-/* Very short viewports (< 600px height) */
+/* 很矮 (< 600px 高) */
 @media (max-height: 600px) {
     :root {
         --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
@@ -109,13 +194,19 @@ img, .image-container {
         --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
     }
 
-    /* Hide non-essential elements */
+    /* 中文场景下,即使在矮视口也不允许小于 13px */
+    [lang^="zh"] :root,
+    :root[lang^="zh"] {
+        --body-size: clamp(0.8125rem, 1.3vw, 1rem);
+    }
+
+    /* 隐藏非必要元素 */
     .nav-dots, .keyboard-hint, .decorative {
         display: none;
     }
 }
 
-/* Extremely short (landscape phones, < 500px height) */
+/* 极矮 (横屏手机, < 500px 高) */
 @media (max-height: 500px) {
     :root {
         --slide-padding: clamp(0.4rem, 2vw, 1rem);
@@ -123,23 +214,28 @@ img, .image-container {
         --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
         --body-size: clamp(0.65rem, 1vw, 0.85rem);
     }
+
+    [lang^="zh"] :root,
+    :root[lang^="zh"] {
+        --body-size: clamp(0.75rem, 1.1vw, 0.95rem);  /* 中文最小 12px */
+    }
 }
 
-/* Narrow viewports (< 600px width) */
+/* 窄视口 (< 600px 宽) */
 @media (max-width: 600px) {
     :root {
         --title-size: clamp(1.25rem, 7vw, 2.5rem);
     }
 
-    /* Stack grids vertically */
+    /* 网格降为单列 */
     .grid {
         grid-template-columns: 1fr;
     }
 }
 
 /* ===========================================
-   REDUCED MOTION
-   Respect user preferences
+   降低动效
+   尊重用户偏好
    =========================================== */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {

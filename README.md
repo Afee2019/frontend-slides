@@ -1,182 +1,188 @@
-# Frontend Slides
+# Frontend Slides(中文原生版)
 
-A Claude Code skill for creating stunning, animation-rich HTML presentations — from scratch or by converting PowerPoint files.
+> **English summary**: A Claude Code skill that creates stunning, animation-rich HTML presentations — from scratch or by converting PowerPoint files. **This fork is Simplified-Chinese-native**: every preset has a curated Chinese font pairing, CSS rules cover full-width punctuation / line-break / hanging-punctuation / `palt` / 2-em first-line indent / per-language font stacks, and content-density limits are recalibrated for CJK character density. English content is still fully supported.
 
-## What This Does
+为非设计师做出**单文件、零依赖、动画驱动的 HTML 演示文稿**——可以从零开始,也可以把 PowerPoint 转成网页。
 
-**Frontend Slides** helps non-designers create beautiful web presentations without knowing CSS or JavaScript. It uses a "show, don't tell" approach: instead of asking you to describe your aesthetic preferences in words, it generates visual previews and lets you pick what you like.
+**本分叉是简体中文原生版**:12 套预设全部补齐中文字体配对,新增 3 套中文专属预设(宣纸水墨 / 港式霓虹 / 杂志感 CN),CSS 规则按汉字方块结构重新校准了行高、字号下限、避头尾、悬挂标点、首行缩进、`palt` 字距等。**英文内容、中英混排同样是一等支持目标。**
 
-Here is a deck about the skill, made through the skill:
+## 这份技能能做什么
 
-https://github.com/user-attachments/assets/ef57333e-f879-432a-afb9-180388982478
+- **零依赖** —— 单个 HTML 文件,CSS / JS 全部内联。不用 npm、不打包、不上框架。
+- **看图说话(Show, Don't Tell)** —— 说不清自己想要什么样的设计?没关系,直接生成 3 张视觉预览让你挑。
+- **PPT 转换** —— 把现有的 PowerPoint 转成网页演示,保留全部图文和备注。
+- **拒绝 AI 流水线感** —— 精选 15 套有性格的视觉风格(不要白底紫渐变 + Inter)。
+- **生产级质量** —— 可访问、响应式、注释清晰的代码,你拿走能直接改。
 
-### Key Features
+## 中文专属增强
 
-- **Zero Dependencies** — Single HTML files with inline CSS/JS. No npm, no build tools, no frameworks.
-- **Visual Style Discovery** — Can't articulate design preferences? No problem. Pick from generated visual previews.
-- **PPT Conversion** — Convert existing PowerPoint files to web, preserving all images and content.
-- **Anti-AI-Slop** — Curated distinctive styles that avoid generic AI aesthetics (bye-bye, purple gradients on white).
-- **Production Quality** — Accessible, responsive, well-commented code you can customize.
+- **字体堆栈双层化**:每个预设给出"英文字体 + 中文字体"的完整 `font-family`,数字 / 拉丁自动走漂亮的英文字体,汉字走选定的中文字体。
+- **15 套预设**:原 12 套预设全部补中文配对,新增 3 套中文原生预设:
+  - **宣纸水墨**(Ma Shan Zheng + LXGW WenKai + 朱砂印章)—— 东方、传统、考究
+  - **港式霓虹**(Noto Serif HK + 霓虹勾边)—— 街招、夜色、复古港风
+  - **杂志感 CN**(Noto Serif SC Black + 横线分隔 + 引言块)—— 沉稳可信的中文 editorial 替代
+- **`viewport-base.css` 中文规则**:`line-break: strict`(避头尾)、`hanging-punctuation`(悬挂标点)、`text-spacing` + `palt`(字距优化)、`line-height: 1.7`、字号下限提升到 14px(避免汉字小于 12px 退化)、`overflow-wrap: anywhere` 长 URL 兜底,全部默认开启。
+- **内容密度上限按汉字校准**:标题 ≤ 12 字 / 副标 ≤ 20 字 / 要点 ≤ 15 字 / 段落 ≤ 60 字 / 卡片标题 ≤ 6 字。
+- **中文字体 CDN 加载速查**:Noto Sans/Serif SC、LXGW WenKai、Smiley Sans 得意黑、ZCOOL 系列、HarmonyOS Sans SC、Sarasa Mono SC、Maoken Tangyuan 等开源中文 web 字体,加载方式全部写在 `STYLE_PRESETS.md`。
+- **中英混排支持**:`<html lang="zh-CN">` 自动激活全套中文规则;遇到英文/数字片段自动走拉丁字体回退;`font-feature-settings: "palt"` 解决中英之间字距过宽。
 
-## Installation
+## 安装
 
-### Via Plugin Marketplace (Recommended)
+### 通过 Plugin Marketplace(推荐)
 
-Install directly from Claude Code in two commands:
+在 Claude Code 里两行命令搞定:
 
 ```bash
 /plugin marketplace add zarazhangrui/frontend-slides
 /plugin install frontend-slides@frontend-slides
 ```
 
-Then use it by typing `/frontend-slides` in Claude Code.
+然后输 `/frontend-slides` 即可调用。
 
-### Manual Installation
+### 手工安装
 
-Copy the skill files to your Claude Code skills directory:
-
-```bash
-# Create the skill directory
-mkdir -p ~/.claude/skills/frontend-slides/scripts
-
-# Copy all files (or clone this repo directly)
-cp SKILL.md STYLE_PRESETS.md viewport-base.css html-template.md animation-patterns.md ~/.claude/skills/frontend-slides/
-cp scripts/extract-pptx.py ~/.claude/skills/frontend-slides/scripts/
-```
-
-Or clone directly:
+复制本仓库到 Claude Code 的 skills 目录:
 
 ```bash
 git clone https://github.com/zarazhangrui/frontend-slides.git ~/.claude/skills/frontend-slides
 ```
 
-Then use it by typing `/frontend-slides` in Claude Code.
+或者只拷文件:
 
-## Usage
+```bash
+mkdir -p ~/.claude/skills/frontend-slides/scripts
+cp SKILL.md STYLE_PRESETS.md viewport-base.css html-template.md animation-patterns.md ~/.claude/skills/frontend-slides/
+cp scripts/extract-pptx.py scripts/deploy.sh scripts/export-pdf.sh ~/.claude/skills/frontend-slides/scripts/
+```
 
-### Create a New Presentation
+输 `/frontend-slides` 调用。
+
+## 用法
+
+### 从零做一份演示
 
 ```
 /frontend-slides
 
-> "I want to create a pitch deck for my AI startup"
+> "帮我做一份 AI 创业公司的融资路演 PPT"
 ```
 
-The skill will:
+技能会:
 
-1. Ask about your content (slides, messages, images)
-2. Ask about the feeling you want (impressed? excited? calm?)
-3. Generate 3 visual style previews for you to compare
-4. Create the full presentation in your chosen style
-5. Open it in your browser
+1. 一次性问完用途 / 篇幅 / 内容就绪度 / 主要语言 / 是否需要浏览器内编辑
+2. 问你想让观众有什么感受(沉稳 / 振奋 / 平和 / 共鸣 / 东方书卷)
+3. 生成 3 张视觉预览让你对比
+4. 在你选的风格里生成完整演示
+5. 在浏览器里打开
 
-### Convert a PowerPoint
+### PPT 转换
 
 ```
 /frontend-slides
 
-> "Convert my presentation.pptx to a web slideshow"
+> "把 presentation.pptx 转成网页演示"
 ```
 
-The skill will:
+技能会:
 
-1. Extract all text, images, and notes from your PPT
-2. Show you the extracted content for confirmation
-3. Let you pick a visual style
-4. Generate an HTML presentation with all your original assets
+1. 提取全部文字、图片、备注
+2. 给你确认提取结果
+3. 让你选风格
+4. 生成完整 HTML(保留原图,文字 / 备注作为注释)
 
-## Included Styles
+## 包含的风格
 
-### Dark Themes
+### 暗色主题
 
-- **Bold Signal** — Confident, high-impact, vibrant card on dark
-- **Electric Studio** — Clean, professional, split-panel
-- **Creative Voltage** — Energetic, retro-modern, electric blue + neon
-- **Dark Botanical** — Elegant, sophisticated, warm accents
+- **Bold Signal** —— 自信、高冲击、暗底彩卡(中文配 Smiley Sans 得意黑)
+- **Electric Studio** —— 干净、专业、双栏切分(中文配 HarmonyOS Sans SC)
+- **Creative Voltage** —— 活力、复古现代、电光蓝 + 霓虹(中文配 ZCOOL 庆科黄油体)
+- **Dark Botanical** —— 雅致、考究、暖色点缀(中文配思源宋体 + LXGW 文楷)
 
-### Light Themes
+### 浅色主题
 
-- **Notebook Tabs** — Editorial, organized, paper with colorful tabs
-- **Pastel Geometry** — Friendly, approachable, vertical pills
-- **Split Pastel** — Playful, modern, two-color vertical split
-- **Vintage Editorial** — Witty, personality-driven, geometric shapes
+- **Notebook Tabs** —— 编辑、有秩序、彩色标签(中文配思源宋体 Black + 思源黑体)
+- **Pastel Geometry** —— 友好、可接近、垂直药丸(中文配猫啃汤圆体)
+- **Split Pastel** —— 俏皮、现代、双色分屏(中文配 ZCOOL 快乐体)
+- **Vintage Editorial** —— 有人格、复古衬线 + 几何(中文配 ZCOOL 小薇 + LXGW Bright)
 
-### Specialty
+### 专题
 
-- **Neon Cyber** — Futuristic, particle backgrounds, neon glow
-- **Terminal Green** — Developer-focused, hacker aesthetic
-- **Swiss Modern** — Minimal, Bauhaus-inspired, geometric
-- **Paper & Ink** — Literary, drop caps, pull quotes
+- **Neon Cyber** —— 未来感、霓虹辉光(中文配 Smiley Sans)
+- **Terminal Green** —— 开发者、黑客感(中文配更纱等宽 Sarasa Mono SC)
+- **Swiss Modern** —— 包豪斯、极简(中文配思源黑体单字体)
+- **Paper & Ink** —— 文学、思辨、首字下沉(中文配思源宋体 + LXGW 文楷)
 
-## Architecture
+### 中文原生(新增)
 
-This skill uses **progressive disclosure** — the main `SKILL.md` is a concise map (~180 lines), with supporting files loaded on-demand only when needed:
+- **宣纸水墨** —— 东方、传统、朱砂印章 + 楷书
+- **港式霓虹** —— 港风、霓虹招牌、深紫底
+- **杂志感 CN** —— 沉稳、可信、巨字宋体 + 横线分隔
 
-| File                      | Purpose                        | Loaded When               |
-| ------------------------- | ------------------------------ | ------------------------- |
-| `SKILL.md`                | Core workflow and rules        | Always (skill invocation) |
-| `STYLE_PRESETS.md`        | 12 curated visual presets      | Phase 2 (style selection) |
-| `viewport-base.css`       | Mandatory responsive CSS       | Phase 3 (generation)      |
-| `html-template.md`        | HTML structure and JS features | Phase 3 (generation)      |
-| `animation-patterns.md`   | CSS/JS animation reference     | Phase 3 (generation)      |
-| `scripts/extract-pptx.py` | PPT content extraction         | Phase 4 (conversion)      |
-| `scripts/deploy.sh`       | Deploy to Vercel               | Phase 6 (sharing)         |
-| `scripts/export-pdf.sh`   | Export slides to PDF           | Phase 6 (sharing)         |
+## 架构
 
-This design follows [OpenAI's harness engineering](https://openai.com/index/harness-engineering/) principle: "give the agent a map, not a 1,000-page instruction manual."
+本技能用**渐进披露**——主 `SKILL.md` 只是一份精炼地图(约 200 行),其余文件按阶段按需读取:
 
-## Philosophy
+| 文件                      | 用途                                          | 何时加载                |
+| ------------------------- | --------------------------------------------- | ----------------------- |
+| `SKILL.md`                | 主流程 + 规则                                  | 永远(调用即载)        |
+| `STYLE_PRESETS.md`        | 15 套预设 + 中文字体配对                       | 阶段 2(选风格)        |
+| `viewport-base.css`       | 强制内联的 CSS(含中文阅读校准)               | 阶段 3(生成)          |
+| `html-template.md`        | HTML 骨架 + JS 功能 + 中文自检清单             | 阶段 3(生成)          |
+| `animation-patterns.md`   | 动画 + **中文排版规范**                        | 阶段 3(生成)          |
+| `scripts/extract-pptx.py` | PPT 内容提取                                   | 阶段 4(转换)          |
+| `scripts/deploy.sh`       | 部署到 Vercel                                  | 阶段 6(分享)          |
+| `scripts/export-pdf.sh`   | 导出 PDF                                       | 阶段 6(分享)          |
 
-This skill was born from the belief that:
+这种设计借鉴 [OpenAI 的 harness engineering](https://openai.com/index/harness-engineering/):"给 agent 一份地图,不要丢给它一本 1000 页的说明书。"
 
-1. **You don't need to be a designer to make beautiful things.** You just need to react to what you see.
+## 设计理念
 
-2. **Dependencies are debt.** A single HTML file will work in 10 years. A React project from 2019? Good luck.
+- **不会设计,也能做出好东西。**你不需要会画 UI,你只需要看到觉得"对"。
+- **依赖即债务。**一个 HTML 文件 10 年后还能开。2019 年的 React 项目?祝你好运。
+- **通用即遗忘。**每一份演示应该感觉是为这次内容专门定做的,不是模板套出来的。
+- **注释是一种善意。**代码要能讲清自己——给未来的你,也给任何打开它的人。
 
-3. **Generic is forgettable.** Every presentation should feel custom-crafted, not template-generated.
+## 分享演示
 
-4. **Comments are kindness.** Code should explain itself to future-you (or anyone else who opens it).
+生成之后,技能会主动问你要不要分享。两条路:
 
-## Sharing Your Presentations
+### 部署到在线 URL
 
-After creating a presentation, the skill offers two ways to share it:
-
-### Deploy to a Live URL
-
-One command deploys your slides to a permanent, shareable URL that works on any device — phones, tablets, laptops:
+一行命令把演示发到一个永久、可分享的链接(手机平板都能开):
 
 ```bash
 bash scripts/deploy.sh ./my-deck/
-# or
+# 或
 bash scripts/deploy.sh ./presentation.html
 ```
 
-Uses [Vercel](https://vercel.com) (free tier). The skill walks you through signup and login if it's your first time.
+用 [Vercel](https://vercel.com) 免费托管。第一次会引导你注册登录。
 
-### Export to PDF
+### 导出 PDF
 
-Convert your slides to a PDF for email, Slack, Notion, or printing:
+把演示转成 PDF,用于邮件、Slack、Notion、打印:
 
 ```bash
 bash scripts/export-pdf.sh ./my-deck/index.html
 bash scripts/export-pdf.sh ./presentation.html ./output.pdf
 ```
 
-Uses [Playwright](https://playwright.dev) to screenshot each slide at 1920×1080 and combine into a PDF. Installs automatically if needed. Animations are not preserved (it's a static snapshot).
+用 [Playwright](https://playwright.dev) 把每页截图为 1920×1080 后合成 PDF。需要时自动装。**动画不保留**——是静态快照。
 
-## Requirements
+## 依赖要求
 
 - [Claude Code](https://claude.ai/claude-code) CLI
-- For PPT conversion: Python with `python-pptx` library
-- For URL deployment: Node.js + Vercel account (free)
-- For PDF export: Node.js (Playwright installs automatically)
+- PPT 转换:Python + `python-pptx`
+- URL 部署:Node.js + Vercel 账号(免费)
+- PDF 导出:Node.js(Playwright 自动装)
 
-## Credits
+## 致谢
 
-Created by [@zarazhangrui](https://github.com/zarazhangrui) with Claude Code.
+原版由 [@zarazhangrui](https://github.com/zarazhangrui) 用 Claude Code 创建。
 
-Inspired by the "Vibe Coding" philosophy — building beautiful things without being a traditional software engineer.
+中文原生分叉:补齐 12 套预设的中文字体配对、新增 3 套中文专属预设、改写 `animation-patterns.md` 加"中文排版规范"、`viewport-base.css` 按汉字密度校准、`SKILL.md` 阶段提问全部中文化、`html-template.md` 增加中文骨架与自检清单。
 
 ## License
 
-MIT — Use it, modify it, share it.
+MIT —— 拿去用、改、分享。
